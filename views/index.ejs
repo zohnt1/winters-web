@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>WINTER'S WEB</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #02030a;
+      --bg-soft: #050919;
+      --panel: #070d22;
+      --panel-soft: #0d1635;
+      --accent: #49ffb3;
+      --accent-soft: rgba(73,255,179,0.12);
+      --danger: #ff3b6b;
+      --text-main: #f4f5ff;
+      --text-muted: #8088aa;
+      --border-subtle: #181f3c;
+      --shadow-soft: 0 18px 45px rgba(0,0,0,0.8);
+      --card-radius: 16px;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      background: radial-gradient(circle at top, #151b3f 0, #02030a 55%);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    /* ------- GLITCH LANDING ------- */
+    #landing {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #131630 0, #02030a 60%);
+      z-index: 10;
+    }
+    .glitch-wrap {
+      position: relative;
+      margin-bottom: 24px;
+    }
+    .glitch {
+      font-size: clamp(2.8rem, 6vw, 4.2rem);
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      position: relative;
+      text-shadow:
+        0 0 18px rgba(73,255,179,0.8),
+        0 0 2px #000;
+      animation: glowPulse 3.2s ease-in-out infinite;
+    }
+    .glitch::before,
+    .glitch::after {
+      content: "WINTER'S WEB";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      overflow: hidden;
+      clip-path: inset(0 0 0 0);
+      mix-blend-mode: screen;
+    }
+    .glitch::before {
+      left: 2px;
+      text-shadow: -2px 0 #ff3b6b;
+      animation: glitchShift 2s infinite linear alternate;
+    }
+    .glitch::after {
+      left: -2px;
+      text-shadow: 2px 0 #3d7bff;
+      animation: glitchShift2 1.6s infinite linear alternate;
+    }
+    @keyframes glowPulse {
+      0%, 100% { text-shadow: 0 0 10px rgba(73,255,179,0.7); opacity: 0.9; }
+      50% { text-shadow: 0 0 26px rgba(73,255,179,1); opacity: 1; }
+    }
+    @keyframes glitchShift {
+      0% { clip-path: inset(0 0 75% 0); transform: translate(0,0); }
+      20% { clip-path: inset(10% 0 55% 0); transform: translate(-1px,1px); }
+      40% { clip-path: inset(40% 0 30% 0); transform: translate(1px,-1px); }
+      60% { clip-path: inset(70% 0 5% 0); transform: translate(-1px,0); }
+      80% { clip-path: inset(50% 0 25% 0); transform: translate(1px,1px); }
+      100% { clip-path: inset(0 0 75% 0); transform: translate(0,0); }
+    }
+    @keyframes glitchShift2 {
+      0% { clip-path: inset(80% 0 0 0); transform: translate(0,0); }
+      20% { clip-path: inset(60% 0 20% 0); transform: translate(1px,-1px); }
+      40% { clip-path: inset(35% 0 40% 0); transform: translate(-1px,1px); }
+      60% { clip-path: inset(10% 0 65% 0); transform: translate(1px,0); }
+      80% { clip-path: inset(30% 0 45% 0); transform: translate(-1px,-1px); }
+      100% { clip-path: inset(80% 0 0 0); transform: translate(0,0); }
+    }
+    .landing-sub {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .enter-btn {
+      padding: 0.8rem 1.8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(73,255,179,0.35);
+      background: radial-gradient(circle at top, var(--accent-soft), #050715);
+      color: var(--accent);
+      font-size: 0.9rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 0 18px rgba(73,255,179,0.35);
+    }
+    .enter-btn::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.35),
+        transparent
+      );
+      transform: translateX(-120%);
+      opacity: 0.7;
+    }
+    .enter-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 28px rgba(73,255,179,0.55);
+    }
+    .enter-btn:hover::after {
+      animation: sweep 0.6s forwards;
+    }
+    @keyframes sweep {
+      to { transform: translateX(120%); }
+    }
+    .landing-noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='noStitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+      mix-blend-mode: screen;
+      animation: noiseShift 0.65s steps(2,end) infinite;
+    }
+    @keyframes noiseShift {
+      0% { transform: translate(0,0); }
+      50% { transform: translate(-10px,6px); }
+      100% { transform: translate(4px,-2px); }
+    }
+    .hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .fade-in {
+      animation: fadeIn 0.4s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    /* ------- MAIN APP LAYOUT ------- */
+    #app {
+      position: relative;
+      inset: 0;
+      height: 100vh;
+      padding: 16px 22px;
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+    }
+    #app.active {
+      display: flex;
+      animation: fadeIn 0.4s ease-out;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .top-left {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+    .logo-small {
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .top-badge {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(73,255,179,0.4);
+      background: rgba(10,25,51,0.8);
+      color: var(--text-muted);
+    }
+    .top-right {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(73,255,179,0.9);
+      margin-right: 4px;
+    }
+    .main-layout {
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 14px;
+      min-height: 0;
+    }
+    .panel {
+      background: radial-gradient(circle at top, #151b3a 0, #040717 55%);
+      border-radius: 18px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      padding: 14px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 0;
+    }
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+    .category-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .tab {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(5,8,20,0.8);
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: border 0.15s, background 0.15s, color 0.15s;
+    }
+    .tab.active {
+      border-color: rgba(73,255,179,0.6);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+      margin-top: 4px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+    .card {
+      background: radial-gradient(circle at top, #151b37 0, #050818 65%);
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border-subtle);
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.15s, box-shadow 0.15s, border 0.15s;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.8);
+      border-color: rgba(73,255,179,0.5);
+    }
+    .thumb {
+      height: 70px;
+      border-radius: 10px;
+      background: linear-gradient(135deg,#22294c,#3a496e,#1f273f);
+      position: relative;
+      overflow: hidden;
+    }
+    .thumb::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(
+        135deg,
+        rgba(73,255,179,0.16),
+        transparent,
+        rgba(61,123,255,0.18)
+      );
+      mix-blend-mode: screen;
+    }
+    .card-title {
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+    .pill {
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+    .price {
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+    .escrow-pill {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(255, 204, 0, 0.2);
+      border: 1px solid rgba(255,204,0,0.6);
+      color: #ffd966;
+      letter-spacing: 0.1em;
+    }
+    .btn-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 5px;
+    }
+    .btn-soft {
+      flex: 1;
+      padding: 4px 0;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(8,12,28,0.9);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border 0.15s;
+    }
+    .btn-soft.primary {
+      border-color: rgba(73,255,179,0.6);
+      color: var(--accent);
+      background: rgba(73,255,179,0.06);
+    }
+    .btn-soft:hover {
+      background: rgba(255,255,255,0.05);
+    }
+    .btn-soft.primary:hover {
+      background: rgba(73,255,179,0.12);
+    }
+    /* ------- DETAILS PANEL ------- */
+    .details-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .details-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .details-category {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+    }
+    .details-name {
+      font-size: 0.98rem;
+      font-weight: 600;
+    }
+    .details-meta {
+      display: flex;
+      gap: 8px;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+    }
+    .badge {
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+    .details-main {
+      flex: 1;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 10px;
+      min-height: 0;
+    }
+    .dosage-block {
+      padding: 10px;
+      border-radius: 12px;
+      background: radial-gradient(circle at top,var(--panel-soft) 0,var(--panel) 60%);
+      border: 1px solid var(--border-subtle);
+    }
+    .dosage-label-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .dosage-bar {
+      height: 5px;
+      border-radius: 999px;
+      background: linear-gradient(
+        90deg,
+        #61ffb7 0%,
+        #ffe066 40%,
+        #ff9f40 70%,
+        #ff4b7a 100%
+      );
+      box-shadow: 0 0 15px rgba(73,255,179,0.6);
+    }
+    .effects-layout {
+      display: grid;
+      grid-template-columns: repeat(2,minmax(0,1fr));
+      gap: 10px;
+      font-size: 0.7rem;
+    }
+    .effects-column-title {
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .effects-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      color: var(--text-main);
+    }
+    .interactions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-size: 0.7rem;
+      margin-top: 4px;
+    }
+    .interaction-pill {
+      padding: 4px 6px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.02);
+    }
+    .interaction-pill.warn {
+      border-color: rgba(255,153,0,0.8);
+      background: rgba(255,153,0,0.08);
+      color: #ffcf7a;
+    }
+    .interaction-pill.danger {
+      border-color: rgba(255,59,107,0.9);
+      background: rgba(255,59,107,0.12);
+      color: #ff9bb4;
+    }
+    .checkout-card {
+      padding: 10px;
+      border-radius: 12px;
+      background: radial-gradient(circle at top,#151b3a 0,#050818 60%);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.74rem;
+    }
+    .checkout-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .checkout-label {
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.6rem;
+    }
+    .checkout-price {
+      font-weight: 600;
+      color: var(--accent);
+    }
+    .ship-btn {
+      width: 100%;
+      padding: 6px 0;
+      border-radius: 10px;
+      border: 1px solid rgba(73,255,179,0.7);
+      background: linear-gradient(120deg,#142941,#163c3a);
+      color: var(--accent);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.15s;
+    }
+    .ship-btn:hover {
+      background: linear-gradient(120deg,#1b3550,#184f44);
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.8);
+    }
+    .quantity-input {
+      width: 50px;
+      border-radius: 6px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(0,0,0,0.4);
+      color: var(--text-main);
+      padding: 3px 4px;
+      font-size: 0.72rem;
+    }
+    @media (max-width: 950px) {
+      .main-layout {
+        grid-template-columns: minmax(0,1fr);
+        grid-template-rows: 1.3fr 1fr;
+      }
+    }
+    @media (max-width: 720px) {
+      #app { padding: 10px; }
+      .main-layout {
+        grid-template-rows: 1.1fr 1.2fr;
+      }
+      .product-grid {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+
+
+  <!-- LANDING SCREEN -->
+  <div id="landing">
+    <div class="glitch-wrap">
+      <div class="glitch">WINTER'S WEB</div>
+    </div>
+    <div class="landing-sub">Encrypted access • invite only • for rp use only</div>
+    <button class="enter-btn" id="enterBtn">Enter Node</button>
+    <div class="landing-noise"></div>
+  </div>
+
+
+  <!-- MAIN APP -->
+  <div id="app">
+    <div class="top-bar">
+      <div class="top-left">
+        <div class="logo-small">WINTER'S WEB</div>
+        <span class="top-badge">dark node active</span>
+      </div>
+      <div class="top-right">
+        <span><span class="dot"></span> relay stable</span>
+        <span>mirror id: wg-07x</span>
+      </div>
+    </div>
+    <div class="main-layout">
+      <!-- LEFT: PRODUCT GRID -->
+      <div class="panel">
+        <div class="panel-header">
+          <span>inventory</span>
+          <div class="category-tabs">
+            <button class="tab active" data-category="drugs">Drugs</button>
+            <button class="tab" data-category="guns">Guns</button>
+            <button class="tab" data-category="cars">Cars</button>
+            <button class="tab" data-category="credit">Credit</button>
+          </div>
+        </div>
+        <div class="product-grid" id="productGrid"></div>
+      </div>
+      <!-- RIGHT: DETAILS -->
+      <div class="panel" id="detailsPanel">
+        <div class="details-header">
+          <div class="details-title-block">
+            <div class="details-category" id="detailsCategory">Select listing</div>
+            <div class="details-name" id="detailsName">No item selected</div>
+            <div class="details-meta" id="detailsMeta"></div>
+          </div>
+          <span class="badge">escrow only</span>
+        </div>
+        <div class="details-main">
+          <div class="dosage-block">
+            <div class="dosage-label-row">
+              <span>Intensity profile</span>
+              <span id="doseRangeLabel">low–med</span>
+            </div>
+            <div class="dosage-bar"></div>
+          </div>
+          <div class="effects-layout">
+            <div>
+              <div class="effects-column-title">Primary effects</div>
+              <div class="effects-list" id="effectsList">
+                <span>—</span>
+              </div>
+            </div>
+            <div>
+              <div class="effects-column-title">Risks</div>
+              <div class="effects-list" id="risksList">
+                <span>—</span>
+              </div>
+            </div>
+          </div>
+          <div class="checkout-card">
+            <div class="checkout-row">
+              <div>
+                <div class="checkout-label">ship from</div>
+                <div id="shipFrom">—</div>
+              </div>
+              <div>
+                <div class="checkout-label">ship to</div>
+                <div id="shipTo">—</div>
+              </div>
+            </div>
+            <div class="checkout-row">
+              <div>
+                <div class="checkout-label">listing type</div>
+                <div id="listingType">—</div>
+              </div>
+              <div>
+                <div class="checkout-label">stock</div>
+                <div id="stockInfo">—</div>
+              </div>
+            </div>
+            <div class="checkout-row">
+              <span class="checkout-label">method</span>
+              <span id="shippingMethod">—</span>
+            </div>
+            <div class="checkout-row">
+              <span class="checkout-label">unit price</span>
+              <span class="checkout-price" id="unitPrice">$0.00</span>
+            </div>
+            <div class="checkout-row">
+              <span class="checkout-label">quantity</span>
+              <input type="number" min="1" value="1" class="quantity-input" id="qtyInput" />
+            </div>
+            <button class="ship-btn" id="checkoutBtn">Queue Order</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    // ---------- DATA ----------
+    const products = {
+      drugs: [
+        {
+          id: "stim-tabs",
+          name: "High-Grade Stimulant Tabs",
+          badge: "Stimulant",
+          price: 48,
+          shipFrom: "North Los Santos",
+          shipTo: "City Wide",
+          listingType: "Escrow",
+          stock: "Limited",
+          dosageProfile: "light–strong",
+          effects: [
+            "Energy spike",
+            "Focus boost",
+            "Talkative mood"
+          ],
+          risks: [
+            "Heart rate increase",
+            "Anxiety",
+            "Crash on comedown"
+          ],
+          shipping: "Local drop — 1–2 hrs"
+        },
+        {
+          id: "holo-squares",
+          name: "Hallucinogenic Squares",
+          badge: "Psychedelic",
+          price: 60,
+          shipFrom: "Paleto Coast",
+          shipTo: "City & County",
+          listingType: "Escrow",
+          stock: "Slow drip",
+          dosageProfile: "threshold–heavy",
+          effects: [
+            "Visual distortion",
+            "Time stretch",
+            "Mood shifts"
+          ],
+          risks: [
+            "Bad trips if overused",
+            "Paranoia",
+            "Sleep issues"
+          ],
+          shipping: "Dead-drop — same night"
+        },
+        {
+          id: "calm-caps",
+          name: "Calming Capsules",
+          badge: "Downer",
+          price: 32,
+          shipFrom: "Downtown",
+          shipTo: "City Only",
+          listingType: "Escrow",
+          stock: "Steady",
+          dosageProfile: "light–medium",
+          effects: [
+            "Body relaxation",
+            "Reduced tension",
+            "Sleepy after-effect"
+          ],
+          risks: [
+            "Drowsiness",
+            "Coordination loss",
+            "Respiratory risk if mixed"
+          ],
+          shipping: "Courier handoff — 2–3 hrs"
+        }
+      ],
+      guns: [
+        {
+          id: "pistol",
+          name: "Pistol",
+          badge: "Pistol",
+          price: 750,
+          shipFrom: "Undisclosed",
+          shipTo: "Trusted buyers",
+          listingType: "Face-to-face",
+          stock: "Low",
+          dosageProfile: "n/a",
+          effects: ["Concealed carry", "Reliable", "Fast draw"],
+          risks: ["Heat attracts LEO", "Ballistics trace"],
+          shipping: "Meet-up in controlled spot"
+        },
+        {
+          id: "machine-pistol",
+          name: "Machine Pistol",
+          badge: "SMG",
+          price: 1200,
+          shipFrom: "Docks",
+          shipTo: "City & County",
+          listingType: "Escrow + meet",
+          stock: "Rotating",
+          dosageProfile: "n/a",
+          effects: ["High rate of fire", "Compact frame"],
+          risks: ["High profile", "Ammo hungry"],
+          shipping: "Vehicle swap — 1 hr"
+        }
+      ],
+      cars: [
+        {
+          id: "bugatti-chiron",
+          name: "Bugatti Chiron",
+          badge: "Street",
+          price: 30000,
+          shipFrom: "Underground Garage",
+          shipTo: "Approved buyers",
+          listingType: "Clean papers",
+          stock: "1 of 1",
+          dosageProfile: "n/a",
+          effects: ["High top speed", "Custom handling", "Fast breaks"],
+          risks: ["High attention", "Tracked if driven reckless"],
+          shipping: "Key handoff + GPS wipe"
+        }
+      ],
+      credit: [
+        {
+          id: "credit-card-bin",
+          name: "Credit Card BIN",
+          badge: "Info",
+          price: 450,
+          shipFrom: "Remote node",
+          shipTo: "Digital only",
+          listingType: "Data drop",
+          stock: "Rolling",
+          dosageProfile: "n/a",
+          effects: ["Disposable info", "Short-term use"],
+          risks: ["Flagged if abused", "High trace risk"],
+          shipping: "Encrypted dump — 30 min"
+        }
+      ]
+    };
+
+
+    // ---------- RENDERING ----------
+    const productGrid = document.getElementById("productGrid");
+    const tabs = document.querySelectorAll(".tab");
+    let currentCategory = "drugs";
+    let currentItem = null;
+
+
+    function renderGrid() {
+      productGrid.innerHTML = "";
+      const list = products[currentCategory] || [];
+      list.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "card fade-in";
+        card.dataset.id = item.id;
+        card.innerHTML = `
+          <div class="thumb"></div>
+          <div class="escrow-pill">Escrow</div>
+          <div class="card-title">${item.name}</div>
+          <div class="card-meta">
+            <span class="pill">${item.badge}</span>
+            <span class="price">$${item.price.toFixed(0)}</span>
+          </div>
+          <div class="btn-row">
+            <button class="btn-soft">Info</button>
+            <button class="btn-soft primary">View</button>
+          </div>
+        `;
+        card.addEventListener("click", () => {
+          selectItem(item);
+        });
+        productGrid.appendChild(card);
+      });
+    }
+
+
+    // ---------- DETAILS FILL ----------
+    const detailsCategory = document.getElementById("detailsCategory");
+    const detailsName = document.getElementById("detailsName");
+    const detailsMeta = document.getElementById("detailsMeta");
+    const effectsList = document.getElementById("effectsList");
+    const risksList = document.getElementById("risksList");
+    const doseRangeLabel = document.getElementById("doseRangeLabel");
+    const shipFrom = document.getElementById("shipFrom");
+    const shipTo = document.getElementById("shipTo");
+    const listingType = document.getElementById("listingType");
+    const stockInfo = document.getElementById("stockInfo");
+    const shippingMethod = document.getElementById("shippingMethod");
+    const unitPrice = document.getElementById("unitPrice");
+    const qtyInput = document.getElementById("qtyInput");
+    const checkoutBtn = document.getElementById("checkoutBtn");
+
+
+    function selectItem(item) {
+      currentItem = item;
+      detailsCategory.textContent = currentCategory.toUpperCase();
+      detailsName.textContent = item.name;
+      detailsMeta.innerHTML = `
+        <span>${item.badge}</span>
+        <span>Listing: ${item.listingType}</span>
+      `;
+      doseRangeLabel.textContent =
+        item.dosageProfile && item.dosageProfile !== "n/a"
+          ? item.dosageProfile
+          : "n/a";
+      effectsList.innerHTML = item.effects
+        .map(e => `<span>• ${e}</span>`)
+        .join("");
+      risksList.innerHTML = item.risks
+        .map(r => `<span>• ${r}</span>`)
+        .join("");
+      shipFrom.textContent = item.shipFrom;
+      shipTo.textContent = item.shipTo;
+      listingType.textContent = item.listType;
+      listingType.textContent = item.listingType;
+      stockInfo.textContent = item.stock;
+      shippingMethod.textContent = item.shipping;
+      unitPrice.textContent = `$${item.price.toFixed(0)} per unit`;
+    }
+
+
+    // ---------- TAB SWITCH ----------
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        currentCategory = tab.dataset.category;
+        renderGrid();
+        const first = products[currentCategory]?.[0];
+        if (first) selectItem(first);
+      });
+    });
+
+
+    // ---------- CHECKOUT CLICK (RP ONLY) ----------
+    checkoutBtn.addEventListener("click", () => {
+      if (!currentItem) return;
+      const qty = Math.max(1, parseInt(qtyInput.value || "1", 10));
+      const total = qty * currentItem.price;
+      alert(
+        `[RP ONLY] Queued fake order:\n\n` +
+        `${currentItem.name}\nQty: ${qty}\nTotal: $${total.toFixed(0)}`
+      );
+    });
+
+
+    // ---------- LANDING -> APP ----------
+    const landing = document.getElementById("landing");
+    const app = document.getElementById("app");
+    const enterBtn = document.getElementById("enterBtn");
+
+
+    enterBtn.addEventListener("click", () => {
+      landing.classList.add("hidden");
+      app.classList.add("active");
+      renderGrid();
+      const first = products[currentCategory]?.[0];
+      if (first) selectItem(first);
+    });
+  </script>
+</body>
+</html>
